@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HDMI Подключение — Полное руководство</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #1557b0;
+            --accent: #00c853;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0 20px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 64px;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo svg { width: 28px; height: 28px; }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+            background: rgba(26, 115, 232, 0.1);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page { display: none; animation: fadeIn 0.4s ease; }
+        .page.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(26,115,232,0.08) 0%, rgba(0,200,83,0.05) 100%);
+            border-radius: 20px;
+            margin-bottom: 50px;
+            border: 1px solid var(--border);
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(26,115,232,0.1);
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(26, 115, 232, 0.12);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+            font-size: 1.6rem;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Section headers */
+        .section-header {
+            margin-bottom: 30px;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        /* Connector types table */
+        .connector-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+
+        .connector-table th,
+        .connector-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .connector-table th {
+            background: rgba(26, 115, 232, 0.08);
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .connector-table tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .connector-table td:first-child {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* Steps */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Tips */
+        .tip {
+            background: rgba(0, 200, 83, 0.08);
+            border: 1px solid rgba(0, 200, 83, 0.2);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .tip-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .tip strong {
+            color: var(--accent);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .tip p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* FAQ */
+        .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 20px 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .faq-question:hover { background: rgba(255,255,255,0.02); }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 1.4rem;
+            color: var(--primary);
+            transition: transform 0.3s;
+        }
+
+        .faq-item.open .faq-question::after { transform: rotate(45deg); }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 500px;
+            padding: 0 24px 20px;
+        }
+
+        .faq-answer p {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            margin-top: 60px;
+        }
+
+        /* Comparison badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-green { background: rgba(0,200,83,0.15); color: #00c853; }
+        .badge-blue { background: rgba(26,115,232,0.15); color: #1a73e8; }
+        .badge-orange { background: rgba(255,152,0,0.15); color: #ff9800; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .nav-links a { padding: 6px 12px; font-size: 0.85rem; }
+            .step { flex-direction: column; }
+            .connector-table { font-size: 0.85rem; }
+            .connector-table th, .connector-table td { padding: 10px 12px; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <div class="logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="6" width="20" height="12" rx="2"/>
+                <path d="M6 18v4M18 18v4M12 18v4"/>
+            </svg>
+            HDMI Guide
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="nav-link active" data-page="home">Главная</a></li>
+            <li><a href="#" class="nav-link" data-page="types">Типы разъёмов</a></li>
+            <li><a href="#" class="nav-link" data-page="guide">Руководство</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main>
+
+    <!-- PAGE 1: HOME -->
+    <div class="page active" id="page-home">
+        <div class="hero">
+            <h1>Подключение внешних устройств через HDMI</h1>
+            <p>Полное руководство по подключению мониторов, телевизоров, консолей и других устройств через различные типы HDMI-разъёмов. От новичка до эксперта.</p>
+        </div>
+
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">🔌</div>
+                <h3>Типы разъёмов HDMI</h3>
+                <p>Узнайте различия между HDMI Type-A, Type-C (Mini), Type-D (Micro) и новейшими стандартами 2.1. Какой выбрать для вашего устройства?</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📺</div>
+                <h3>Пошаговое подключение</h3>
+                <p>Подробная инструкция по подключению ПК, ноутбуков, игровых консолей, медиаплееров и других устройств к мониторам и ТВ.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3>Решение проблем</h3>
+                <p>Частые ошибки при подключении: нет сигнала, мерцание, неправильное разрешение. Как быстро найти и устранить причину.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔧</div>
+                <h3>Адаптеры и переходники</h3>
+                <p>Когда нужен адаптер HDMI→DisplayPort, HDMI→USB-C или HDMI→VGA. Как выбрать качественный переходник без потери качества.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎮</div>
+                <h3>Игровые консоли</h3>
+                <p>Особенности подключения PlayStation, Xbox и Nintendo Switch. Настройка 4K@120Hz, HDR, VRR и других игровых функций.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📡</div>
+                <h3>Беспроводное подключение</h3>
+                <p>Wireless HDMI, Miracast, Chromecast и AirPlay. Когда беспроводное соединение заменяет кабель и как настроить его правильно.</p>
+            </div>
+        </div>
+
+        <div class="tip">
+            <div class="tip-icon">💡</div>
+            <div>
+                <strong>Важно знать</strong>
+                <p>HDMI — это не просто «разъём для картинки». Современные версии HDMI 2.1 поддерживают разрешение до 10K, частоту обновления 120 Гц, динамический HDR, eARC для аудио и даже передачу данных через Ethernet-канал.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: CONNECTOR TYPES -->
+    <div class="page" id="page-types">
+        <div class="section-header">
+            <h2>Типы HDMI-разъёмов</h2>
+            <p>Сравнение физических разъёмов и версий стандарта HDMI</p>
+        </div>
+
+        <table class="connector-table">
+            <thead>
+                <tr>
+                    <th>Тип разъёма</th>
+                    <th>Размеры</th>
+                    <th>Где используется</th>
+                    <th>Макс. разрешение</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>HDMI Type-A (Standard)</td>
+                    <td>13.9 × 4.45 мм</td>
+                    <td>ТВ, мониторы, ПК, консоли, ресиверы</td>
+                    <td>10K @ 120 Гц (HDMI 2.1)</td>
+                    <td><span class="badge badge-green">Актуален</span></td>
+                </tr>
+                <tr>
+                    <td>HDMI Type-C (Mini)</td>
+                    <td>10.42 × 2.42 мм</td>
+                    <td>Фотоаппараты, планшеты, некоторые ноутбуки</td>
+                    <td>4K @ 60 Гц (HDMI 2.0)</td>
+                    <td><span class="badge badge-blue">Редко</span></td>
+                </tr>
+                <tr>
+                    <td>HDMI Type-D (Micro)</td>
+                    <td>6.4 × 2.8 мм</td>
+                    <td>Смартфоны, GoPro, Raspberry Pi Zero, дроны</td>
+                    <td>4K @ 60 Гц (HDMI 2.0)</td>
+                    <td><span class="badge badge-blue">Редко</span></td>
+                </tr>
+                <tr>
+                    <td>HDMI Type-E (Automotive)</td>
+                    <td>Усиленный корпус</td>
+                    <td>Автомобильные мультимедиа-системы</td>
+                    <td>1080p @ 60 Гц</td>
+                    <td><span class="badge badge-orange">Нишевый</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="section-header">
+            <h2>Версии стандарта HDMI</h2>
+            <p>Ключевые отличия между версиями и что это значит для пользователя</p>
+        </div>
+
+        <table class="connector-table">
+            <thead>
+                <tr>
+                    <th>Версия</th>
+                    <th>Пропускная способность</th>
+                    <th>Макс. разрешение</th>
+                    <th>Ключевые функции</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>HDMI 1.4</td>
+                    <td>10.2 Гбит/с</td>
+                    <td>4K @ 30 Гц / 1080p @ 120 Гц</td>
+                    <td>3D, ARC, Ethernet-канал</td>
+                </tr>
+                <tr>
+                    <td>HDMI 2.0</td>
+                    <td>18 Гбит/с</td>
+                    <td>4K @ 60 Гц</td>
+                    <td>HDR10, 21:9, Dual Video Stream</td>
+                </tr>
+                <tr>
+                    <td>HDMI 2.0b</td>
+                    <td>18 Гбит/с</td>
+                    <td>4K @ 60 Гц</td>
+                    <td>HDR10+, HLG, Static HDR</td>
+                </tr>
+                <tr>
+                    <td>HDMI 2.1</td>
+                    <td>48 Гбит/с</td>
+                    <td>8K @ 60 Гц / 4K @ 120 Гц / 10K</td>
+                    <td>eARC, VRR, ALLM, QMS, QFT, Dynamic HDR</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="tip">
+            <div class="tip-icon">⚠️</div>
+            <div>
+                <strong>Ловушка с кабелями</strong>
+                <p>Для HDMI 2.1 обязательно нужен сертифицированный кабель Ultra High Speed HDMI (с маркировкой на упаковке). Обычные «High Speed» кабели не обеспечат полную пропускную способность 48 Гбит/с, и вы не получите 4K@120Hz или 8K.</p>
+            </div>
+        </div>
+
+        <div class="section-header" style="margin-top: 40px;">
+            <h2>Популярные адаптеры и переходники</h2>
+        </div>
+
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">🔀</div>
+                <h3>HDMI → DisplayPort</h3>
+                <p>Нужен для подключения современных мониторов к видеокартам без DP-выхода. Активный адаптер требуется для 4K@60Hz. Пассивный работает только до 1080p.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔀</div>
+                <h3>HDMI → USB-C / USB-C → HDMI</h3>
+                <p>Для подключения ноутбуков с USB-C (с поддержкой DP Alt Mode) к мониторам и ТВ. Обратный адаптер позволяет подключить HDMI-источник к USB-C монитору.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔀</div>
+                <h3>HDMI → VGA / DVI</h3>
+                <p>Для старых проекторов и мониторов. Только однонаправленный: HDMI→VGA. Не передаёт звук (VGA) — нужен отдельный аудиокабель.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔀</div>
+                <h3>HDMI-сплиттер (1→2, 1→4)</h3>
+                <p>Дублирует один HDMI-сигнал на несколько экранов одновременно. Полезен для презентаций или зеркалирования на несколько ТВ. Не путать с HDMI-switch!</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔀</div>
+                <h3>HDMI-switch (2→1, 4→1)</h3>
+                <p>Позволяет подключить несколько источников (консоль, ПК, ТВ-приставка) к одному входу монитора/ТВ и переключаться между ними кнопкой или пультом.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔀</div>
+                <h3>HDMI-удлинитель (Active Extender)</h3>
+                <p>Для передачи сигнала на расстояние свыше 10–15 метров. Использует Ethernet-кабель (Cat5e/Cat6) или оптоволокно. Пассивный кабель HDMI длиной 20м+ работает плохо.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: GUIDE -->
+    <div class="page" id="page-guide">
+        <div class="section-header">
+            <h2>Пошаговое руководство по подключению</h2>
+            <p>Универсальная инструкция для любого устройства с HDMI-выходом</p>
+        </div>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <h4>Выберите правильный кабель</h4>
+                    <p>Определите, какой HDMI-разъём на вашем устройстве (Type-A стандартный, Type-C Mini, Type-D Micro). Для 4K@120Hz или 8K обязательно используйте сертифицированный Ultra High Speed кабель HDMI 2.1. Длина кабеля — не более 3 метров для максимального качества; для больших расстояний используйте активный удлинитель.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <h4>Подключите кабель к источнику</h4>
+                    <p>Вставьте HDMI-разъём в выходное гнездо на вашем устройстве (ПК, ноутбук, консоль, ТВ-приставка). Убедитесь, что разъём вставлен полностью до щелчка. Не применяйте чрезмерную силу — контакты должны войти плавно. Если разъёмы разного типа, используйте соответствующий адаптер.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <h4>Подключите кабель к приёмнику</h4>
+                    <p>Вставьте второй конец кабеля во входное HDMI-гнездо на мониторе, телевизоре или проекторе. Запомните номер HDMI-порта (HDMI 1, HDMI 2, HDMI 3) — он понадобится при выборе источника сигнала. Некоторые порты на ТВ могут иметь ограниченную функциональность — предпочтительно использовать порт с пометкой HDMI 2.1 или ARC/eARC.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    <h4>Включите устройства в правильном порядке</h4>
+                    <p>Сначала включите монитор/телевизор, затем — источник сигнала (ПК, консоль). Это позволяет устройствам корректно определить друг друга по протоколу EDID и согласовать оптимальное разрешение и частоту обновления. Если порядок нарушен, возможны проблемы с распознаванием.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">5</div>
+                <div class="step-content">
+                    <h4>Выберите правильный вход на мониторе/ТВ</h4>
+                    <p>С помощью пульта или кнопок на корпусе переключитесь на тот HDMI-вход, к которому подключён кабель. На большинстве ТВ это делается кнопкой «Source» или «Input». Если изображение не появилось сразу, подождите 5–10 секунд — устройствам нужно время на handshake.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">6</div>
+                <div class="step-content">
+                    <h4>Настройте разрешение и частоту обновления</h4>
+                    <p>В Windows: Параметры → Система → Дисплей → Дополнительные параметры дисплея. На консолях: Настройки → Экран и звук → Разрешение видеовыхода. Убедитесь, что выбрано нативное разрешение вашего монитора/ТВ и максимальная поддерживаемая частота обновления (60 Гц, 120 Гц, 144 Гц).</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">7</div>
+                <div class="step-content">
+                    <h4>Включите дополнительные функции (опционально)</h4>
+                    <p>Если ваше оборудование поддерживает HDMI 2.1, активируйте: HDR (динамический диапазон), VRR (переменная частота обновления для игр), ALLM (автоматический режим низкой задержки), eARC (для передачи многоканального аудио на саундбар или ресивер).</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>Частые проблемы и решения</h2>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Нет сигнала — чёрный экран</div>
+            <div class="faq-answer">
+                <p>Проверьте, что кабель полностью вставлен с обеих сторон. Попробуйте другой HDMI-порт на ТВ/мониторе. Перезагрузите оба устройства. Проверьте, не требуется ли на ноутбуке нажать комбинацию клавиш (Fn + F4/F5/F8) для переключения на внешний дисплей. Убедитесь, что кабель поддерживает нужное разрешение — дешёвые кабели часто не тянут 4K.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Есть изображение, но нет звука</div>
+            <div class="faq-answer">
+                <p>В Windows: Панель управления → Звук → выберите ваше устройство HDMI как устройство воспроизведения по умолчанию. На ТВ проверьте, что выбран правильный аудиовыход (встроенные динамики, а не внешняя аудиосистема). Для адаптеров HDMI→VGA звук не передаётся — используйте отдельный AUX-кабель.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Изображение мерцает или пропадает</div>
+            <div class="faq-answer">
+                <p>Это часто связано с некачественным или повреждённым кабелем. Попробуйте заменить кабель на сертифицированный. Проверьте, не перегибается ли кабель под острым углом — это может повредить внутренние жилы. Уменьшите частоту обновления в настройках — возможно, кабель не тянет заявленную скорость.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Неправильное разрешение или растянутое изображение</div>
+            <div class="faq-answer">
+                <p>Установите нативное разрешение вашего монитора/ТВ в настройках ОС. В Windows: Параметры → Система → Дисплей → Масштабирование и разрешение. Убедитесь, что выбрано 100% масштабирование. На ТВ включите режим «Только ПК» или «1:1 Pixel Mapping» вместо режима «16:9 stretch», чтобы избежать обрезки краёв.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Задержка (input lag) при игре</div>
+            <div class="faq-answer">
+                <p>На ТВ включите режим «Игра» или «Game Mode» — это отключает обработку изображения (шумоподавление, интерполяцию кадров), которая создаёт задержку. Убедитесь, что подключены к HDMI-порту с поддержкой ALLM (Auto Low Latency Mode). Для ПК-игр используйте монитор с низким input lag (менее 10 мс) вместо ТВ.</p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">HDR не работает или выглядит блекло</div>
+            <div class="faq-answer">
+                <p>Убедитесь, что кабель HDMI 2.1 сертифицирован Ultra High Speed. В настройках Windows включите «Использовать HDR». На ТВ включите HDMI UHD Color / HDMI Deep Color / Enhanced Format для конкретного порта. Некоторые ТВ требуют включения HDR отдельно для каждого HDMI-входа в меню настроек.</p>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <p>© 2026 HDMI Guide — Полное руководство по подключению внешних устройств</p>
+    <p style="margin-top: 8px; font-size: 0.85rem;">Информация предоставлена в образовательных целях</p>
+</footer>
+
+<script>
+    // Navigation
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const pageId = this.getAttribute('data-page');
+
+            // Update nav active state
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+
+            // Show corresponding page
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-question').forEach(q => {
+        q.addEventListener('click', function() {
+            const item = this.parentElement;
+            const isOpen = item.classList.contains('open');
+
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+
+            // Open clicked if it was closed
+            if (!isOpen) {
+                item.classList.add('open');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
